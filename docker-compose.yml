@@ -1,6 +1,7 @@
 services:
   n8n:
-    image: docker.n8n.io/n8nio/n8n
+    build: .
+    image: n8n-gemini:local
     restart: unless-stopped
     ports:
       - "5678:5678"
@@ -12,9 +13,13 @@ services:
       - WEBHOOK_URL=https://${SUBDOMAIN}.${DOMAIN_NAME}/
       - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
       - N8N_DIAGNOSTICS_ENABLED=false
+      # Allow usage of external npm packages in the Code node
+      - NODE_FUNCTION_ALLOW_EXTERNAL=*
     volumes:
       - n8n_data:/home/node/.n8n
       - ./local-files:/files
+      # Map the host's .gemini credentials directory to the container
+      - ~/.gemini:/home/node/.gemini
 
 volumes:
   n8n_data:
