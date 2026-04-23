@@ -13,6 +13,8 @@ services:
       - WEBHOOK_URL=https://${SUBDOMAIN}.${DOMAIN_NAME}/
       - GENERIC_TIMEZONE=${GENERIC_TIMEZONE}
       - N8N_DIAGNOSTICS_ENABLED=false
+      # Fix for express-rate-limit when running behind a reverse proxy (DuckDNS/Nginx)
+      - N8N_PROXY_HOPS=1
       # Allow usage of external npm packages in the Code node
       - NODE_FUNCTION_ALLOW_EXTERNAL=*
     volumes:
