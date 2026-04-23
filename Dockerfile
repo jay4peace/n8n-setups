@@ -3,16 +3,16 @@ FROM docker.n8n.io/n8nio/n8n
 USER root
 
 # 1. Install system utilities and Python environment
-# Note: Installing pandas via apk (py3-pandas) is much faster and more stable on Alpine Linux than via pip
-RUN apk add --no-cache \
+# Note: The n8n image is Debian-based, so we use apt-get instead of apk
+RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 \
-    py3-pip \
-    py3-pandas \
+    python3-pip \
     jq \
-    git
+    git \
+    && rm -rf /var/lib/apt/lists/*
 
 # 2. Install additional Python data analysis packages
-RUN pip3 install --break-system-packages beautifulsoup4 requests
+RUN pip3 install --break-system-packages pandas beautifulsoup4 requests
 
 # 3. Install the Google Gemini CLI
 RUN npm install -g @google/gemini-cli
